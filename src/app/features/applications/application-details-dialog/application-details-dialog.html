@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>{{ data.role }}</h2>
+
+<mat-dialog-content class="dialog-content">
+  <div class="detail-row">
+    <span class="label">Company</span>
+    <span class="value">{{ data.company }}</span>
+  </div>
+   <div class="detail-row">
+    <span class="label">Location</span>
+    <span class="value">{{ data.location }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="label">Status</span>
+    <span class="value">{{ data.status }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="label">Date Applied</span>
+    <span class="value">{{ data.dateApplied }}</span>
+  </div>
+  <div class="detail-row">
+    <span class="label">Notes</span>
+    <span class="value">{{ data.notes || 'No notes added' }}</span>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>

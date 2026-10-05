@@ -1,0 +1,170 @@
+<div class="applications-page">
+  <div class="applications-header">
+    <div>
+    <h2>
+      @if (authService.currentUser(); as user) {
+        Good day {{ user.firstName }} {{ user.lastName }}
+        <span class="wave">👋</span>
+      } @else {
+        Welcome back
+      }
+    </h2>
+    <p>Track and manage all your job application in one place</p>
+    </div>
+    <button mat-raised-button color="primary" routerLink="/applicationForm" href="/applicationForm">
+      <mat-icon>add</mat-icon>
+      Add Application
+    </button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <mat-icon class="stat-icon total">description</mat-icon>
+      <div>
+        <div class="stat-number">{{ totalCount() }}</div>
+        <div class="stat-label">Total Applications</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <mat-icon class="stat-icon applied">check_circle</mat-icon>
+      <div>
+        <div class="stat-number">{{ appliedCount() }}</div>
+        <div class="stat-label">Applied</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <mat-icon class="stat-icon in-progress">hourglass_top</mat-icon>
+      <div>
+        <div class="stat-number">{{ inProgressCount() }}</div>
+        <div class="stat-label">In Progress</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <mat-icon class="stat-icon rejected">cancel</mat-icon>
+      <div>
+        <div class="stat-number">{{ rejectedCount() }}</div>
+        <div class="stat-label">Rejected</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+  <div class="filter-chips">
+    <button class="chip" [class.active]="activeFilter() === 'ALL'" (click)="setFilter('ALL')">
+      All ({{ totalCount() }})
+    </button>
+    <button class="chip" [class.active]="activeFilter() === 'APPLIED'" (click)="setFilter('APPLIED')">
+      Applied ({{ appliedCount() }})
+    </button>
+    <button class="chip" [class.active]="activeFilter() === 'INTERVIEW'" (click)="setFilter('INTERVIEW')">
+      Interview ({{ interviewCount() }})
+    </button>
+    <button class="chip" [class.active]="activeFilter() === 'OFFER'" (click)="setFilter('OFFER')">
+      Offer ({{ offerCount() }})
+    </button>
+    <button class="chip" [class.active]="activeFilter() === 'REJECTED'" (click)="setFilter('REJECTED')">
+      Rejected ({{ rejectedCount() }})
+    </button>
+  </div>
+
+  <div class="view-controls">
+    <button class="sort-btn" (click)="toggleSort()">
+      <mat-icon>swap_vert</mat-icon>
+      {{ sortOrder() === 'newest' ? 'Newest' : 'Oldest' }}
+    </button>
+    <div class="view-toggle">
+      <button [class.active]="viewMode() === 'grid'" (click)="setViewMode('grid')">
+        <mat-icon>grid_view</mat-icon>
+      </button>
+      <button [class.active]="viewMode() === 'list'" (click)="setViewMode('list')">
+        <mat-icon>view_list</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+  @if (isLoading()) {
+    <div class="state-container">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="state-container error-state">
+      <p>{{ errorMessage ()}}</p>
+      <button mat-stroked-button (click)="loadApplications()">Retry</button>
+    </div>
+  } @else if (applications().length === 0) {
+  <div class="state-container empty-state">
+    <div class="empty-icon">
+      <mat-icon>inbox</mat-icon>
+    </div>
+    <h3>No applications yet</h3>
+    <p>
+      You haven't added any job applications yet.
+      Start tracking your job search by adding your first application.
+    </p>
+    <button
+      mat-raised-button
+      color="primary"
+      routerLink="/applicationForm"
+      class="empty-add-btn">
+      <mat-icon>add</mat-icon>
+      Add Your First Application
+    </button>
+  </div>
+} @else {
+  <div class="application-list"
+  [class.list-view]="viewMode() === 'list'">
+    @for (application of filteredApplications(); track application.id) {
+      <div class="application-card">
+        <div class="card-top">
+          <div class="company-info">
+            <div class="company-avatar" [style.background]="companyColor(application.company)">
+              {{ companyInitial(application.company) }}
+            </div>
+            <div>
+              <div class="role">{{ application.role }}</div>
+              <div class="company">{{ application.company }}</div>
+            </div>
+          </div>
+          <span class="status-pill" [ngClass]="statusClass(application.status)">
+            <span class="dot"></span>
+            {{ statusLabel(application.status) }}
+          </span>
+        </div>
+        
+        <div class="card-row">
+          <mat-icon>location_on</mat-icon>
+          <span>{{ application.location }}</span>
+        </div>
+        <div class="card-row">
+          <mat-icon>calendar_today</mat-icon>
+          <span>{{ application.dateApplied }}</span>
+        </div>
+
+     
+          <div class="card-row notes-row">
+            <mat-icon>description</mat-icon>
+            <span class="notes-text" [class.no-notes]="!application.notes">
+              {{ application.notes || 'No notes added' }}
+            </span>
+          </div>
+        
+
+        <div class="card-actions">
+          <button class="view-details-btn" (click)="viewDetails(application)">
+            View Details <mat-icon>arrow_forward</mat-icon>
+          </button>
+          <div class="icon-actions">
+            <button class="icon-action" [routerLink]="['/applicationForm', application.id, 'edit']">
+              <mat-icon>edit</mat-icon> Edit
+            </button>
+            <button class="icon-action delete" (click)="onDelete(application.id)">
+              <mat-icon>delete</mat-icon> Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}
+</div>
