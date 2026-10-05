@@ -1,0 +1,30 @@
+
+<mat-toolbar class = "navbar">
+    <span class = "brand"> Job Tracker</span>
+    <span class = "spacer"></span>
+@if(authService.isLoggedIn()){
+    <nav class = "nav-links">
+        <a mat-button routerLink="/applicationList" routerLinkActive="active-link">
+            <mat-icon> list_alt</mat-icon>
+            My Application
+        </a>
+
+         <a mat-button routerLink="/profile" routerLinkActive="active-link">
+            <mat-icon>account_circle</mat-icon>
+            My profile
+        </a>
+
+        <button mat-button (click) = "onLogout()">
+            <mat-icon>logout</mat-icon>
+            Logout
+        </button>
+    </nav>
+    }@else{
+        <nav class = "nav-links">
+        <button mat-button (click) = "register()" routerLink="/register" href="/register">
+            Register
+        </button>
+    </nav>
+
+    }
+</mat-toolbar>

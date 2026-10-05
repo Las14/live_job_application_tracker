@@ -1,0 +1,49 @@
+
+<button class="menu-toggle" (click)="toggle()">
+  <mat-icon>menu</mat-icon>
+</button>
+
+@if (isOpen()) {
+  <div class="backdrop" (click)="close()"></div>
+}
+
+<aside class="sidebar" [class.open]="isOpen()">
+  <div class="brand">
+    <mat-icon>work</mat-icon>
+    <span>JobTrack</span>
+  </div>
+
+  <nav class="nav-links">
+    <a routerLink="/applicationList" routerLinkActive="active">
+      <mat-icon>home</mat-icon>
+      My Applications
+    </a>
+    <a routerLink="/profile" routerLinkActive="active" (click)="close()">
+      <mat-icon>person</mat-icon>
+      My Profile
+    </a>
+     <a routerLink=" " routerLinkActive="active" >
+      <mat-icon>insert_chart</mat-icon>
+      Statistic
+    </a>
+     <a routerLink=" " routerLinkActive="active" >
+      <mat-icon>apartment</mat-icon>
+      Companies
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="avatar">{{ initials() }}</div>
+      <div class="user-text">
+        <span class="user-name">
+          {{ authService.currentUser()?.firstName }} {{ authService.currentUser()?.lastName }}
+        </span>
+        <span class="user-email">{{ authService.currentUser()?.email }}</span>
+      </div>
+    </div>
+    <button class="logout-btn" (click)="onLogout()" title="Logout">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+</aside>
