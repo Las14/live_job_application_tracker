@@ -1,0 +1,64 @@
+### Create application
+POST http://localhost:8080/api/users/register
+Content-Type: application/json
+
+{
+  "firstName": "fatema",
+  "lastName": "Aly",
+  "birthDate": "2003-03-23",
+  "email": "fatema@test.com",
+  "password": "Password789",
+  "passwordConfirmation": "Password789"
+  
+}
+
+### Applications WITHOUT JWT
+GET http://localhost:8080/api/applications
+
+### Applications WITH JWT
+GET http://localhost:8080/api/applications
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYUBtYS5tYSIsImlhdCI6MTc5MDA3NTA4NSwiZXhwIjoxNzkwMDc4Njg1fQ._qiDiark63_0i7YFcdFdQNkQgpSmWXQ04FbJrrEj9iMJU16UBJKLWEaHA4DhZ044
+
+
+### Test JWT
+GET http://localhost:8080/api/users/test-jwt
+
+### Get all users
+GET http://localhost:8080/api/users
+
+### User Login
+POST http://localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+  "email": "mariam@test.com",
+  "password": "Password123"
+  
+}
+
+
+
+
+
+
+### Get all applications
+GET http://localhost:8080/api/applications
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYUBtYS5tYSIsImlhdCI6MTc5MDE4OTkyOSwiZXhwIjoxNzkwNzk0NzI5fQ.HCVfFezBXwtnzDjKa4Q60oVal2cCYAmjyLn7dn0EqlgJsrzaIeMCVyIiLphkkXKs
+### Post an application 
+POST http://localhost:8080/api/applications
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYUBtYS5tYSIsImlhdCI6MTc5MDE4OTkyOSwiZXhwIjoxNzkwNzk0NzI5fQ.HCVfFezBXwtnzDjKa4Q60oVal2cCYAmjyLn7dn0EqlgJsrzaIeMCVyIiLphkkXKs
+Content-Type: application/json
+
+{
+    "company": "tt",
+    "role": "tt tt",
+    "status": "INTERVIEW",
+    "dateApplied": "2026-09-01",
+    "notes": "tt!"
+   
+}
+### Get application by ID
+GET http://localhost:8080/api/applications/
+
+###Delete application by ID 
+DELETE http://localhost:8080/api/applications/3
