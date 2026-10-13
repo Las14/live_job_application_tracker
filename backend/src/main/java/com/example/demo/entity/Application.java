@@ -30,6 +30,7 @@ public class Application {
    
     
     @Enumerated (EnumType.STRING)
+    @NotNull(message = "Status is required")
     private Status status;
 
     public enum Status{
