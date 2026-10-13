@@ -36,6 +36,7 @@ public class ApplicationService {
 
     public Application create(Application application){
         User user = getCurrentUser();
+        application.setId(0);
         application.setUser(user);
         return applicationRepository.save(application);
     }
@@ -44,5 +45,22 @@ public class ApplicationService {
         User user = getCurrentUser();
         return applicationRepository.findByUserOrderByDateAppliedDesc(user);
 
+    }
+
+    public Application getById(Long id){
+        return applicationRepository.findByIdAndUser(id, getCurrentUser())
+            .orElseThrow(() -> new RuntimeException("Application not found"));
+    }
+
+    public Application update(Long id, Application updated){
+        Application existing = getById(id);
+        updated.setId(existing.getId());
+        updated.setUser(existing.getUser());
+        return applicationRepository.save(updated);
+    }
+
+    public void delete(Long id){
+        Application existing = getById(id);
+        applicationRepository.delete(existing);
     }
 }
