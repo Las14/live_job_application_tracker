@@ -37,16 +37,18 @@
                     </mat-form-field>
 
 
-                    <mat-form-field appearance="outline">
+                   <mat-form-field appearance="outline">
                         <mat-label>Birth date</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="birthDate">
-                        <mat-datepicker-toggle
-                            matIconSuffix
-                            [for]="picker">
-                        </mat-datepicker-toggle>
+
+                        <input matInput [matDatepicker]="picker" [max]="maxBirthDate" formControlName="birthDate">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
-                        @if (profileForm.get('birthDate')?.invalid && profileForm.get('birthDate')?.touched) {
-                            <mat-error>Birth date is required</mat-error>
+                        @if (profileForm.get('birthDate')?.touched) {
+                            @if (profileForm.get('birthDate')?.hasError('matDatepickerMax')) {
+                            <mat-error>You must be at least 16 years old</mat-error>
+                            } @else if (profileForm.get('birthDate')?.invalid) {
+                            <mat-error>Enter a valid birth date</mat-error>
+                            }
                         }
                     </mat-form-field>
 

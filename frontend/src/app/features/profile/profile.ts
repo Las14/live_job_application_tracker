@@ -34,11 +34,17 @@ export class Profile implements  OnInit{
   errorMessage = signal('');
   successMessage = signal('');
 
+  readonly maxBirthDate = (() => {
+  const date = new Date();
+  date.setFullYear(date.getFullYear() - 16);
+  return date;
+  })();
+
   profileForm = this.fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     email: [{value:'', disabled:true}],
-    birthDate: ['', Validators.required]
+    birthDate: [null as Date | null, Validators.required]
   });
 
 
@@ -56,7 +62,7 @@ export class Profile implements  OnInit{
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
-          birthDate: user.birthDate
+          birthDate: this.parseLocalDate(user.birthDate)
 
         });
         this.isLoading.set(false);
@@ -79,13 +85,10 @@ export class Profile implements  OnInit{
     this.successMessage.set('');
 
     const formValue = this.profileForm.getRawValue();
-    const rowBirthDate = formValue.birthDate as any; 
     const data = {
-      firstName : formValue.firstName ?? '',
-      lastName : formValue.lastName ?? '',
-      birthDate : rowBirthDate instanceof Date 
-      ? rowBirthDate.toISOString().split('T')[0]
-      :rowBirthDate ?? ''
+      firstName: formValue.firstName ?? '',
+      lastName: formValue.lastName ?? '',
+      birthDate: this.toLocalIsoDate(formValue.birthDate!)
     };
 
     this.authService.updateCurrentUser(data).subscribe({
@@ -107,5 +110,16 @@ export class Profile implements  OnInit{
       }
     });
   }
+    private parseLocalDate(value: string): Date {
+    const [y, m, d] = value.split('-').map(Number);
+    return new Date(y, m - 1, d);
+    }
+
+    private toLocalIsoDate(date: Date): string {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
 
 }
