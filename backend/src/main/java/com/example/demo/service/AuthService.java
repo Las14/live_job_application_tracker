@@ -41,7 +41,7 @@ public class AuthService {
         if(!request.getPassword()
             .equals(request.getPasswordConfirmation())){
 
-         throw new RuntimeException("Password do not match");
+         throw new RuntimeException("Passwords do not match");
         }
         
         validateAge(request.getBirthDate());
@@ -64,10 +64,10 @@ public class AuthService {
 
     public String loginUser(LoginRequest request){
       User user = userRepository.findByEmail(request.getEmail())
-      .orElseThrow(() -> new RuntimeException("invalid Email or Password"));
+      .orElseThrow(() -> new RuntimeException("Invalid email or password"));
 
       if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
-        throw new RuntimeException("invalid Email or Password");
+        throw new RuntimeException("Invalid email or password");
       }
       return jwtService.generateToken(user.getEmail());
   
@@ -84,8 +84,7 @@ public class AuthService {
         .orElseThrow(() -> new RuntimeException("User not found"));
 
     }
-
-    public User updateCurrentUser(UpdateUserRequest request){
+  public User updateCurrentUser(UpdateUserRequest request){
          validateAge(request.getBirthDate());
         User user = getCurrentUser();
         user.setFirstName(request.getFirstName());
